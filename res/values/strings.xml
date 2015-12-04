@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AirFree</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="welcome">Bonjour et bienvenue sur AirFree. Pour commencer vos achats, cliquer sur le bouton ci-dessous.</string>
+    <string name="commencer_ma_navigation">Commencer ma navigation.</string>
+
+</resources>

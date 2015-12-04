@@ -1,24 +1,31 @@
 package airfree.xprojets.airfree;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.widget.Button;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
 import android.content.Intent;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.app.*;
 
 
 
-public class Accueil extends ActionBarActivity {
+public class Accueil extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accueil);
 
-        final Button loginButton = (Button) findViewById(R.id.go_search);
+        ActionBar mActionBar = getActionBar();
+        mActionBar.setDisplayShowHomeEnabled(false);
+        mActionBar.setDisplayShowTitleEnabled(false);
+        LayoutInflater mInflater = LayoutInflater.from(this);
+
+        View mCustomView = mInflater.inflate(R.layout.actionbar, null);
+        mActionBar.setCustomView(mCustomView);
+        mActionBar.setDisplayShowCustomEnabled(true);
+
+        final Button loginButton = (Button) findViewById(R.id.bouton_debut);
         loginButton.setOnClickListener(new OnClickListener() {
 
             @Override

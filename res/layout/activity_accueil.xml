@@ -1,0 +1,29 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    style="@style/AppTheme"
+    tools:context="XProjets.airfree.Accueil"
+    android:weightSum="2.0">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/welcome"
+            android:layout_gravity="center"
+            android:src="@drawable/airfree"
+            />
+        <Button
+            android:id="@+id/bouton_debut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="16dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bouton"
+            android:text="@string/commencer_ma_navigation"
+            android:textColor="@color/bleu_logo"
+            />
+</FrameLayout>

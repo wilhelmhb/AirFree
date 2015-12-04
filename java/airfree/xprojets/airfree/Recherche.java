@@ -1,5 +1,6 @@
 package airfree.xprojets.airfree;
 
+import android.app.ActionBar;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.CharArrayBuffer;
@@ -8,7 +9,8 @@ import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -24,7 +26,7 @@ import android.widget.GridView;
 import android.view.Menu;
 import android.view.MenuInflater;
 
-public class Recherche extends ActionBarActivity {
+public class Recherche extends Activity {
     private List bookTitles;
     private final String dbName = "Android";
     private static SQLiteDatabase sqliteDB = null;
@@ -46,6 +48,14 @@ public class Recherche extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recherche);
+        ActionBar mActionBar = getActionBar();
+        mActionBar.setDisplayShowHomeEnabled(false);
+        mActionBar.setDisplayShowTitleEnabled(false);
+        LayoutInflater mInflater = LayoutInflater.from(this);
+
+        View mCustomView = mInflater.inflate(R.layout.actionbar, null);
+        mActionBar.setCustomView(mCustomView);
+        mActionBar.setDisplayShowCustomEnabled(true);
         sqliteDB = null;
         try {
             sqliteDB = this.openOrCreateDatabase(dbName, MODE_PRIVATE, null);
@@ -58,7 +68,7 @@ public class Recherche extends ActionBarActivity {
             }
             Cursor cursor = sqliteDB.rawQuery("SELECT id as _id, bookTitle FROM " + tableName, null);
             bookTitles = new ArrayList();
-            myAdapter = new SimpleCursorAdapter(this, R.layout.element, cursor, new String[]{"bookTitle",},new int[]{R.id.intitule});
+            myAdapter = new SimpleCursorAdapter(this, R.layout.article, cursor, new String[]{"bookTitle",},new int[]{R.id.intitule});
             ArrayList results = new ArrayList();
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
@@ -68,7 +78,7 @@ public class Recherche extends ActionBarActivity {
                     } while (cursor.moveToNext());
                 }
             }
-            myAdapter = new SimpleCursorAdapter(this, R.layout.element,  cursor, new String[]{"bookTitle"},new int[]{R.id.intitule});
+            myAdapter = new SimpleCursorAdapter(this, R.layout.article,  cursor, new String[]{"bookTitle"},new int[]{R.id.intitule});
             GridView view = (GridView) findViewById(R.id.grille);
             view.setAdapter(myAdapter);
         }
@@ -79,15 +89,5 @@ public class Recherche extends ActionBarActivity {
                 sqliteDB.close();
             }
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        MenuInflater inflater = getMenuInflater();
-        //R.menu.menu est l'id de notre menu
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-
     }
 }

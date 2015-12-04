@@ -1,0 +1,13 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <!-- Application theme. -->
+    
+    <style name="AppTheme" parent="android:Theme.Holo.Light">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">#FFF</item>
+        <item name="android:textColor">@color/bleu_logo</item>
+        <!--<item name="android:windowTitleBackgroundStyle">@style/WindowTitleBackground</item>-->
+    </style>
+</resources>
