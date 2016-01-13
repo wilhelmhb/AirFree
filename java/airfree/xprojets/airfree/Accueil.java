@@ -17,15 +17,16 @@ public class Accueil extends Activity {
         setContentView(R.layout.activity_accueil);
 
         ActionBar mActionBar = getActionBar();
+        mActionBar.hide();/*
         mActionBar.setDisplayShowHomeEnabled(false);
         mActionBar.setDisplayShowTitleEnabled(false);
-        LayoutInflater mInflater = LayoutInflater.from(this);
+        /*LayoutInflater mInflater = LayoutInflater.from(this);
 
         View mCustomView = mInflater.inflate(R.layout.actionbar, null);
         mActionBar.setCustomView(mCustomView);
-        mActionBar.setDisplayShowCustomEnabled(true);
+        mActionBar.setDisplayShowCustomEnabled(true);*/
 
-        final Button loginButton = (Button) findViewById(R.id.bouton_debut);
+        final Button loginButton = (Button) findViewById(R.id.bouton_francais);
         loginButton.setOnClickListener(new OnClickListener() {
 
             @Override
