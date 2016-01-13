@@ -42,23 +42,42 @@
                 android:layout_marginRight="@dimen/activity_vertical_margin"
                 android:textColor="@color/bleu_logo"
                 android:layout_weight="1"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_vertical_margin"
-                android:id="@+id/prix"
-                android:gravity="center"
-                android:text="Prix en €"
-                android:textColor="#777777"
-                android:layout_weight="1"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:id="@+id/prix"
+                    android:layout_gravity="start|center_vertical"
+                    android:gravity="center"
+                    android:text="Prix en €"
+                    android:textColor="#777777"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:gravity="center"
+                    android:id="@+id/stock"
+                    android:text="En stock"
+                    android:textColor="#000000"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:orientation="horizontal">
                 <RatingBar
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:isIndicator="true"
+                    android:layout_gravity="left|center_vertical"
                     android:numStars="5"
                     android:stepSize="0.5"
                     android:rating="2.5"
@@ -66,7 +85,19 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
                     android:text="Noter"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ajouter au panier"
+                    android:layout_gravity="center"/>
             </LinearLayout>
             <TextView
                 android:layout_width="wrap_content"
