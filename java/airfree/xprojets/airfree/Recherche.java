@@ -85,6 +85,7 @@ public class Recherche extends Activity {
     private PopupWindow popUp;
     private PopupWindow popUpArticle;
     private FrameLayout layout_MainMenu;
+    private DisplayMetrics metrics;
 
     boolean click = true;
 
@@ -94,7 +95,7 @@ public class Recherche extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recherche);
 
-        final DisplayMetrics metrics = new DisplayMetrics();
+        metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         getActionBar().hide();
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -124,114 +125,14 @@ public class Recherche extends Activity {
                     popUpArticle.update(metrics.widthPixels - 100, metrics.heightPixels - 100);
                 }
             };
+            handlePopUpArticle();
+            handleSlideMenu();
+            handlePopUpConnection();
             myAdapter = new SimpleCursorAdapterWithClick(this, R.layout.article, cursor, new String[]{"bookTitle",},
                     new int[]{R.id.vendeur}, R.id.apercu, callBack);
             /* end of the db creation and treatment */
-
             GridView view = (GridView) findViewById(R.id.grille);//go look for the right layout for our response
             view.setAdapter(myAdapter);// will create one grid element for each response from the db
-
-            /* begin of the definition of the slide menu */
-            prepareListData();
-            menuElementsList = (ExpandableListView) findViewById(R.id.menu_elements);
-            menuElementsList.setGroupIndicator(getResources().getDrawable(R.drawable.group_indicator));
-            menuElementsList.setMinimumWidth(metrics.widthPixels / 2);
-            ExpandableListAdapter myAdapter = new ExpandableListAdapter(this, groupTitle, listDataChild,
-                    R.layout.menu, R.layout.menu_item, R.id.intitule, R.id.menu_element_title);
-            menuLayout = (DrawerLayout) findViewById(R.id.menu_layout);
-            // set a custom shadow that overlays the main content when the drawer opens
-            //menuLayout.setDrawerShadow(R.drawable.airfree, GravityCompat.START);
-            menuElementsList.setAdapter(myAdapter);
-            menuElementsList.setOnItemClickListener(new DrawerItemClickListener());
-            // enable ActionBar app icon to behave as action to toggle menu
-            //mActionBar.setDisplayHomeAsUpEnabled(true);
-            //mActionBar.setHomeButtonEnabled(true);
-
-            // ActionBarDrawerToggle ties together the the proper interactions
-            // between the sliding drawer and the action bar app icon
-            menuToggle = new ActionBarDrawerToggle(this, /* host Activity */
-                    menuLayout, /* DrawerLayout object */
-                    R.string.drawer_open, /* "open drawer" description for accessibility */
-                    R.string.drawer_close /* "close drawer" description for accessibility */
-            ) {
-                public void onDrawerClosed(View view) {
-                    //invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
-                }
-
-                public void onDrawerOpened(View drawerView) {
-                    //invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
-                }
-            };
-            menuLayout.setDrawerListener(menuToggle);
-            ImageButton imageButton = (ImageButton) findViewById(R.id.imageButton);
-            imageButton.setVisibility(View.VISIBLE);
-            imageButton.setOnClickListener(new OnClickListener() {
-                public void onClick(View view) {
-                    if (menuLayout.isDrawerOpen(menuElementsList)) {
-                        menuLayout.closeDrawer(menuElementsList);
-                        findViewById(R.id.search).setVisibility(View.GONE);
-                        findViewById(R.id.title_text).setVisibility(View.VISIBLE);
-                    } else {
-                        menuLayout.openDrawer(menuElementsList);
-                        findViewById(R.id.search).setVisibility(View.VISIBLE);
-                        findViewById(R.id.title_text).setVisibility(View.GONE);
-                    }
-                }
-            });
-            /* creation of the pop-up */
-            layout_MainMenu = (FrameLayout) findViewById( R.id.mainmenu);
-            layout_MainMenu.getForeground().setAlpha(0);
-            //((FrameLayout) findViewById(R.id.action_bar)).getForeground().setAlpha(0);
-            Button but = (Button) findViewById(R.id.loginButton);
-            but.setOnClickListener(new OnClickListener() {
-                public void onClick(View v) {
-                    if (click) {
-                        layout_MainMenu.getForeground().setAlpha(220);
-                        //((FrameLayout) findViewById(R.id.action_bar)).getForeground().setAlpha(220);
-                        popUp.showAtLocation(findViewById(R.id.mainmenu), Gravity.CENTER, 0, 0);
-                        popUp.update(metrics.widthPixels - 100, metrics.heightPixels -100);
-                        click = false;
-                    } else {
-                        //((FrameLayout) findViewById(R.id.action_bar)).getForeground().setAlpha(0);
-                        //layout_MainMenu.getForeground().setAlpha(0);
-                        popUp.dismiss();
-                        //click = true;
-                    }
-                }
-
-            });
-            popUp = new PopupWindow();
-            LayoutInflater inflater = LayoutInflater.from(this);
-            View popUpView = inflater.inflate(R.layout.pop_up_login, null);
-            popUp.setContentView(popUpView);
-            popUp.setOutsideTouchable(true);
-            popUp.setTouchable(true);
-            popUp.setFocusable(true);
-            popUp.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            popUp.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                @Override
-                public void onDismiss() {
-                    popUp.dismiss();
-                    layout_MainMenu.getForeground().setAlpha(0);
-                    click = true;
-                }
-            });
-            popUpArticle = new PopupWindow();
-            LayoutInflater inflaterArticle = LayoutInflater.from(this);
-            View popUpViewArticle = inflater.inflate(R.layout.pop_up_article, null);
-            popUpArticle.setContentView(popUpViewArticle);
-            popUpArticle.setOutsideTouchable(true);
-            popUpArticle.setTouchable(true);
-            popUpArticle.setFocusable(true);
-            popUpArticle.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            popUpArticle.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                @Override
-                public void onDismiss() {
-                    popUp.dismiss();
-                    layout_MainMenu.getForeground().setAlpha(0);
-                    click = true;
-                }
-            });
 
         }
         /* exceptions treatement (db) */
@@ -245,7 +146,119 @@ public class Recherche extends Activity {
         /* end of exceptions treatement */
         System.out.println("end of launching");
     }
-    
+
+
+    private void handlePopUpArticle() {
+        popUpArticle = new PopupWindow();
+        LayoutInflater inflaterArticle = LayoutInflater.from(this);
+        View popUpViewArticle = inflaterArticle.inflate(R.layout.pop_up_article, null);
+        popUpArticle.setContentView(popUpViewArticle);
+        popUpArticle.setOutsideTouchable(true);
+        popUpArticle.setTouchable(true);
+        popUpArticle.setFocusable(true);
+        popUpArticle.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popUpArticle.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                popUp.dismiss();
+                layout_MainMenu.getForeground().setAlpha(0);
+                click = true;
+            }
+        });
+    }
+
+    private void handlePopUpConnection() {
+        popUp = new PopupWindow();
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View popUpView = inflater.inflate(R.layout.pop_up_login, null);
+        popUp.setContentView(popUpView);
+        popUp.setOutsideTouchable(true);
+        popUp.setTouchable(true);
+        popUp.setFocusable(true);
+        popUp.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popUp.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                popUp.dismiss();
+                layout_MainMenu.getForeground().setAlpha(0);
+                click = true;
+            }
+        });
+        layout_MainMenu = (FrameLayout) findViewById( R.id.mainmenu);
+        layout_MainMenu.getForeground().setAlpha(0);
+        //((FrameLayout) findViewById(R.id.action_bar)).getForeground().setAlpha(0);
+        Button but = (Button) findViewById(R.id.loginButton);
+        but.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                if (click) {
+                    layout_MainMenu.getForeground().setAlpha(220);
+                    //((FrameLayout) findViewById(R.id.action_bar)).getForeground().setAlpha(220);
+                    popUp.showAtLocation(findViewById(R.id.mainmenu), Gravity.CENTER, 0, 0);
+                    popUp.update(metrics.widthPixels - 100, metrics.heightPixels - 100);
+                    click = false;
+                } else {
+                    //((FrameLayout) findViewById(R.id.action_bar)).getForeground().setAlpha(0);
+                    //layout_MainMenu.getForeground().setAlpha(0);
+                    popUp.dismiss();
+                    //click = true;
+                }
+            }
+        });
+    }
+
+    private void handleSlideMenu() {
+        prepareListData();
+        menuElementsList = (ExpandableListView) findViewById(R.id.menu_elements);
+        menuElementsList.setGroupIndicator(getResources().getDrawable(R.drawable.group_indicator));
+        menuElementsList.setMinimumWidth(metrics.widthPixels / 2);
+        ExpandableListAdapter myAdapter = new ExpandableListAdapter(this, groupTitle, listDataChild,
+                R.layout.menu, R.layout.menu_item, R.id.intitule, R.id.menu_element_title);
+        menuLayout = (DrawerLayout) findViewById(R.id.menu_layout);
+        // set a custom shadow that overlays the main content when the drawer opens
+        //menuLayout.setDrawerShadow(R.drawable.airfree, GravityCompat.START);
+        menuElementsList.setAdapter(myAdapter);
+        menuElementsList.setOnItemClickListener(new DrawerItemClickListener());
+        // enable ActionBar app icon to behave as action to toggle menu
+        //mActionBar.setDisplayHomeAsUpEnabled(true);
+        //mActionBar.setHomeButtonEnabled(true);
+
+        // ActionBarDrawerToggle ties together the the proper interactions
+        // between the sliding drawer and the action bar app icon
+        menuToggle = new ActionBarDrawerToggle(this, /* host Activity */
+                menuLayout, /* DrawerLayout object */
+                R.string.drawer_open, /* "open drawer" description for accessibility */
+                R.string.drawer_close /* "close drawer" description for accessibility */
+        ) {
+            public void onDrawerClosed(View view) {
+                //invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
+                findViewById(R.id.search).setVisibility(View.GONE);
+                findViewById(R.id.title_text).setVisibility(View.VISIBLE);
+            }
+
+            public void onDrawerOpened(View drawerView) {
+                //invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
+                findViewById(R.id.search).setVisibility(View.VISIBLE);
+                findViewById(R.id.title_text).setVisibility(View.GONE);
+            }
+        };
+        menuLayout.setDrawerListener(menuToggle);
+        ImageButton imageButton = (ImageButton) findViewById(R.id.imageButton);
+        imageButton.setVisibility(View.VISIBLE);
+        imageButton.setOnClickListener(new OnClickListener() {
+            public void onClick(View view) {
+                if (menuLayout.isDrawerOpen(menuElementsList)) {
+                    menuLayout.closeDrawer(menuElementsList);
+                    findViewById(R.id.search).setVisibility(View.GONE);
+                    findViewById(R.id.title_text).setVisibility(View.VISIBLE);
+                } else {
+                    menuLayout.openDrawer(menuElementsList);
+                    findViewById(R.id.search).setVisibility(View.VISIBLE);
+                    findViewById(R.id.title_text).setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
     /*
      * Preparing the list data
      */
