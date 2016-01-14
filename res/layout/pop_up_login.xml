@@ -37,8 +37,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/connect"
             android:text="Se connecter"
-            android:textColor="#777777"
-            android:layout_weight="1"/>
+            android:background="@drawable/bouton"
+            style="@style/button_text"/>
     </LinearLayout>
     <LinearLayout
         android:orientation="vertical"
@@ -68,7 +68,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/register"
             android:text="S'inscrire"
-            android:textColor="#777777"
-            android:layout_weight="1"/>
+            android:background="@drawable/bouton"
+            style="@style/button_text"/>
     </LinearLayout>
 </LinearLayout>

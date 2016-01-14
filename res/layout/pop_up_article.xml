@@ -30,14 +30,14 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/intitule"
                 android:text="Nom de l'article"
-                android:gravity="center"
+                android:gravity="left|center_vertical"
                 android:textAlignment="center"
                 android:textColor="#777777"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/vendeur"
-                android:gravity="center"
+                android:gravity="left|center_vertical"
                 android:text="Nom du vendeur"
                 android:layout_marginRight="@dimen/activity_vertical_margin"
                 android:textColor="@color/bleu_logo"
@@ -46,14 +46,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_gravity="center">
+                android:layout_gravity="left|center_vertical">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:id="@+id/prix"
                     android:layout_gravity="start|center_vertical"
-                    android:gravity="center"
+                    android:gravity="start"
                     android:text="Prix en €"
                     android:textColor="#777777"
                     android:layout_weight="1"/>
@@ -86,18 +85,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center_vertical"
-                    android:text="Noter"/>
+                    android:text="Noter"
+                    android:background="@drawable/bouton"
+                    android:id="@+id/noter"
+                    style="@style/button_text"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:orientation="horizontal">
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Ajouter au panier"
-                    android:layout_gravity="center"/>
+                    android:background="@drawable/bouton"
+                    android:id="@+id/button1"
+                    style="@style/button_text"
+                    />
             </LinearLayout>
             <TextView
                 android:layout_width="wrap_content"
