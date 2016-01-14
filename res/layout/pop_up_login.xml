@@ -25,10 +25,12 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/mail_connect"
             android:text="Adresse mail"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/mdp_connect"
             android:hint="password"
             android:password="true"
             android:layout_gravity="center"/>
@@ -36,6 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/connect"
+            android:textSize="10dp"
             android:text="Se connecter"
             android:background="@drawable/bouton"
             style="@style/button_text"/>
@@ -56,10 +59,12 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/email_register"
             android:text="Adresse mail"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/mdp_register"
             android:hint="password"
             android:password="true"
             android:layout_gravity="center"/>
