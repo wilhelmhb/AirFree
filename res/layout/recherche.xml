@@ -95,7 +95,7 @@
                 android:background="#00000000"/>
             <TextView
                 android:id="@+id/title_text"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textSize="20dp"
@@ -107,7 +107,7 @@
                 android:layout_centerVertical="true"
                 android:textStyle="bold" />
             <SearchView
-                android:layout_width="200dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="12dp"
@@ -138,6 +138,17 @@
                 android:layout_marginRight="8dp"
                 android:background="@null"
                 android:text="Se connecter"/>
+            <Button
+                android:id="@+id/myAccountButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:layout_gravity="right|center_vertical"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
+                android:background="@null"
+                android:visibility="gone"
+                android:text="Mon compte"/>
             <!--<Button
                 android:id="@+id/singInButton"
                 android:layout_width="wrap_content"

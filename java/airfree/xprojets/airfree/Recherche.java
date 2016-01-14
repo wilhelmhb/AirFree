@@ -4,6 +4,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -82,12 +83,14 @@ public class Recherche extends Activity {
     private DrawerLayout menuLayout;
     private ExpandableListView menuElementsList;
     private ActionBarDrawerToggle menuToggle;
-    private PopupWindow popUp;
+    private PopupWindow popUpConnection;
+    private PopupWindow popUpAccount;
     private PopupWindow popUpArticle;
     private FrameLayout layout_MainMenu;
     private DisplayMetrics metrics;
 
     boolean click = true;
+    boolean connected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -127,7 +130,12 @@ public class Recherche extends Activity {
             };
             handlePopUpArticle();
             handleSlideMenu();
-            handlePopUpConnection();
+            if(connected){
+                ifIsConnected();
+            }
+            else {
+                handlePopUpConnection();
+            }
             myAdapter = new SimpleCursorAdapterWithClick(this, R.layout.article, cursor, new String[]{"bookTitle",},
                     new int[]{R.id.vendeur}, R.id.apercu, callBack);
             /* end of the db creation and treatment */
@@ -159,7 +167,7 @@ public class Recherche extends Activity {
         popUpArticle.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                popUp.dismiss();
+                popUpArticle.dismiss();
                 layout_MainMenu.getForeground().setAlpha(0);
                 click = true;
             }
@@ -167,18 +175,18 @@ public class Recherche extends Activity {
     }
 
     private void handlePopUpConnection() {
-        popUp = new PopupWindow();
+        popUpConnection = new PopupWindow();
         LayoutInflater inflater = LayoutInflater.from(this);
         View popUpView = inflater.inflate(R.layout.pop_up_login, null);
-        popUp.setContentView(popUpView);
-        popUp.setOutsideTouchable(true);
-        popUp.setTouchable(true);
-        popUp.setFocusable(true);
-        popUp.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popUp.setOnDismissListener(new PopupWindow.OnDismissListener() {
+        popUpConnection.setContentView(popUpView);
+        popUpConnection.setOutsideTouchable(true);
+        popUpConnection.setTouchable(true);
+        popUpConnection.setFocusable(true);
+        popUpConnection.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popUpConnection.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                popUp.dismiss();
+                popUpConnection.dismiss();
                 layout_MainMenu.getForeground().setAlpha(0);
                 click = true;
             }
@@ -192,17 +200,78 @@ public class Recherche extends Activity {
                 if (click) {
                     layout_MainMenu.getForeground().setAlpha(220);
                     //((FrameLayout) findViewById(R.id.action_bar)).getForeground().setAlpha(220);
-                    popUp.showAtLocation(findViewById(R.id.mainmenu), Gravity.CENTER, 0, 0);
-                    popUp.update(metrics.widthPixels - 100, metrics.heightPixels - 100);
+                    popUpConnection.showAtLocation(findViewById(R.id.mainmenu), Gravity.CENTER, 0, 0);
+                    popUpConnection.update(metrics.widthPixels - 100, metrics.heightPixels - 100);
                     click = false;
                 } else {
                     //((FrameLayout) findViewById(R.id.action_bar)).getForeground().setAlpha(0);
                     //layout_MainMenu.getForeground().setAlpha(0);
-                    popUp.dismiss();
+                    popUpConnection.dismiss();
                     //click = true;
                 }
             }
         });
+        ((Button) popUpConnection.getContentView().findViewById(R.id.connect)).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("connection en cours");
+                handleConnection();
+            }
+        });
+    }
+
+    private void handlePopUpMyAccount() {
+        popUpAccount = new PopupWindow();
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View popUpView = inflater.inflate(R.layout.pop_up_account, null);
+        popUpAccount.setContentView(popUpView);
+        popUpAccount.setOutsideTouchable(true);
+        popUpAccount.setTouchable(true);
+        popUpAccount.setFocusable(true);
+        popUpAccount.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popUpAccount.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                popUpAccount.dismiss();
+                layout_MainMenu.getForeground().setAlpha(0);
+                click = true;
+            }
+        });
+        layout_MainMenu = (FrameLayout) findViewById(R.id.mainmenu);
+        layout_MainMenu.getForeground().setAlpha(0);
+        Button but = (Button) findViewById(R.id.myAccountButton);
+        but.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                if (click) {
+                    layout_MainMenu.getForeground().setAlpha(220);
+                    //((FrameLayout) findViewById(R.id.action_bar)).getForeground().setAlpha(220);
+                    popUpAccount.showAtLocation(findViewById(R.id.mainmenu), Gravity.CENTER, 0, 0);
+                    popUpAccount.update(metrics.widthPixels - 100, metrics.heightPixels - 100);
+                    click = false;
+                } else {
+                    //((FrameLayout) findViewById(R.id.action_bar)).getForeground().setAlpha(0);
+                    //layout_MainMenu.getForeground().setAlpha(0);
+                    popUpAccount.dismiss();
+                    //click = true;
+                }
+            }
+        });
+    }
+
+    private void ifIsConnected() {
+        findViewById(R.id.loginButton).setVisibility(View.GONE);
+        findViewById(R.id.myAccountButton).setVisibility(View.VISIBLE);
+        handlePopUpMyAccount();
+    }
+
+    private void handleConnection() {
+        CharSequence email = ((TextView) popUpConnection.getContentView().findViewById(R.id.mail_connect)).getText();
+        CharSequence mdp = ((TextView) popUpConnection.getContentView().findViewById(R.id.mdp_connect)).getText();
+        //TODO : test if really connected
+        connected = true;
+        ifIsConnected();
+        System.out.println("connexion réussie");
+        popUpConnection.dismiss();
     }
 
     private void handleSlideMenu() {
