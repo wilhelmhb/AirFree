@@ -33,15 +33,15 @@ public class Recherche extends Activity {
     private final String tableName = "BestSellers";
     private final String[] bookTitle = new String[] {
         "Vendeur",
-        "Vendeur",
-        "Vendeur",
-        "Vendeur",
-        "Vendeur",
-        "Vendeur",
-        "Vendeur",
-        "Vendeur",
-        "Vendeur",
-        "Vendeur",
+        "Vendeur1",
+        "Vendeur2",
+        "Vendeur3",
+        "Vendeur4",
+        "Vendeur5",
+        "Vendeur6",
+        "Vendeur7",
+        "Vendeur8",
+        "Vendeur9",
         "Vendeur",
         "Vendeur",
         "Vendeur",
@@ -114,12 +114,12 @@ public class Recherche extends Activity {
             final Cursor cursor = sqliteDB.rawQuery("SELECT id as _id, bookTitle FROM " + tableName, null);
             SimpleCursorAdapterWithClick.CallBack callBack = new SimpleCursorAdapterWithClick.CallBack() {
                 @Override
-                public void callback(/*Cursor c*/) {
+                public void callback(CharSequence vendeur) {
                     System.out.println("button pressed");
                     /*ImageView apercu = (ImageView) popUpArticle.getContentView().findViewById(R.id.apercu);
                     apercu.setImageResource(cursor.getString(cursor.getColumnIndex(cursor.getColumnName(1))));*/
-                    /*TextView vendeur = (TextView) popUpArticle.getContentView().findViewById(R.id.vendeur);
-                    vendeur.setText(cursor.getString(cursor.getColumnIndexOrThrow("bookTitle")));*/
+                    TextView vendeur2 = (TextView) popUpArticle.getContentView().findViewById(R.id.vendeur);
+                    vendeur2.setText(vendeur);
                     layout_MainMenu.getForeground().setAlpha(220);
                     popUpArticle.showAtLocation(findViewById(R.id.mainmenu), Gravity.CENTER, 0, 0);
                     popUpArticle.update(metrics.widthPixels - 100, metrics.heightPixels - 100);
@@ -133,7 +133,6 @@ public class Recherche extends Activity {
             /* end of the db creation and treatment */
             GridView view = (GridView) findViewById(R.id.grille);//go look for the right layout for our response
             view.setAdapter(myAdapter);// will create one grid element for each response from the db
-
         }
         /* exceptions treatement (db) */
         catch(SQLiteException e) {System.out.println("pas cool");}

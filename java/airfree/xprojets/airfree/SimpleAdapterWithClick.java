@@ -5,11 +5,13 @@ import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 /**
  * Created by guillaume on 12/12/15.
@@ -17,7 +19,7 @@ import android.widget.SimpleCursorAdapter;
 
 class SimpleCursorAdapterWithClick extends SimpleCursorAdapter {
     public interface CallBack {
-        void callback();
+        void callback(CharSequence vendeur);
     }
     private CallBack callBack;
     private Context mContext;
@@ -50,16 +52,22 @@ class SimpleCursorAdapterWithClick extends SimpleCursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        int row_id = cursor.getColumnIndex("_id");  //Your row id (might need to replace)
+        final int row_id = cursor.getColumnIndex("_id");  //Your row id (might need to replace)
+        final TextView vendeur = (TextView) view.findViewById(R.id.vendeur);
+        vendeur.setText(cursor.getString(cursor.getColumnIndex("bookTitle")));
+        System.out.println(vendeur.getText());
+        final Cursor c = cursor;
         ImageButton button = (ImageButton) view.findViewById(button_layout);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //ADD STUFF HERE you know which row is clicked. and which button
-                System.out.println("button clicked");
-                callBack.callback();
+                System.out.println("button clicked : "+vendeur.getText());
+                callBack.callback(vendeur.getText());
+
             }
         });
+
     }
 
 }
