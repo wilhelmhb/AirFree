@@ -30,7 +30,7 @@ public class Recherche extends Activity {
     private List bookTitles;
     private final String dbName = "Android";
     private static SQLiteDatabase sqliteDB = null;
-    private SimpleCursorAdapter myAdapter;
+    private SimpleCursorAdapterWithClick myAdapter;
     private final String tableName = "BestSellers";
     private final String[] bookTitle = new String[] {
         "Vendeur",
@@ -109,6 +109,7 @@ public class Recherche extends Activity {
             sqliteDB = this.openOrCreateDatabase(dbName, MODE_PRIVATE, null);
             //sqliteDB.execSQL("DROP TABLE " + tableName +";");
             sqliteDB.execSQL("CREATE TABLE IF NOT EXISTS " + tableName + " (id INTEGER PRIMARY KEY, bookTitle VARCHAR);");
+            sqliteDB.execSQL("DELETE FROM " + tableName);
             int i = 0;
             for (String ver : bookTitle) {
                 sqliteDB.execSQL("INSERT INTO " + tableName + " Values ("+i+",'" + ver + "');");
@@ -143,13 +144,13 @@ public class Recherche extends Activity {
             view.setAdapter(myAdapter);// will create one grid element for each response from the db
         }
         /* exceptions treatement (db) */
-        catch(SQLiteException e) {System.out.println("pas cool");}
-        finally {
+        catch(SQLiteException e) {System.out.println(e.getMessage());}
+        /*finally {
             if (sqliteDB != null) {
                 sqliteDB.execSQL("DELETE FROM " + tableName);
                 sqliteDB.close();
             }
-        }
+        }*/
         /* end of exceptions treatement */
         System.out.println("end of launching");
     }
@@ -256,6 +257,15 @@ public class Recherche extends Activity {
                 }
             }
         });
+        Cursor cursor = sqliteDB.rawQuery("SELECT id as _id, bookTitle FROM " + tableName, null);
+        SimpleCursorAdapter panierAdapter = new SimpleCursorAdapter(this, R.layout.article_panier, cursor, new String[]{"bookTitle",},
+                new int[]{R.id.vendeur_panier});
+        ListView panier = (ListView) popUpAccount.getContentView().findViewById(R.id.panier);
+        Button validation = (Button) popUpAccount.getContentView().findViewById(R.id.validation);
+        System.out.println(validation.getText());
+        System.out.println(panier.getBackground());
+        System.out.println(panierAdapter);
+        panier.setAdapter(panierAdapter);
     }
 
     private void ifIsConnected() {
@@ -268,6 +278,7 @@ public class Recherche extends Activity {
     private void handleConnection() {
         CharSequence email = ((TextView) popUpConnection.getContentView().findViewById(R.id.mail_connect)).getText();
         CharSequence mdp = ((TextView) popUpConnection.getContentView().findViewById(R.id.mdp_connect)).getText();
+        System.out.println(email);
         //TODO : test if really connected
         connected = true;
         ifIsConnected();
@@ -277,6 +288,7 @@ public class Recherche extends Activity {
 
     private void handleSlideMenu() {
         prepareListData();
+        System.out.println("menu de navigation en cours de création");
         menuElementsList = (ExpandableListView) findViewById(R.id.menu_elements);
         menuElementsList.setGroupIndicator(getResources().getDrawable(R.drawable.group_indicator));
         menuElementsList.setMinimumWidth(metrics.widthPixels / 2);
@@ -310,6 +322,7 @@ public class Recherche extends Activity {
                 findViewById(R.id.title_text).setVisibility(View.GONE);
             }
         };
+        System.out.println("menuToogle créé");
         menuLayout.setDrawerListener(menuToggle);
         ImageButton imageButton = (ImageButton) findViewById(R.id.imageButton);
         imageButton.setVisibility(View.VISIBLE);
