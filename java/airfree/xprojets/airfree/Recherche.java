@@ -94,7 +94,7 @@ public class Recherche extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
-        System.out.println("activity launched");
+        //System.out.println("activity launched");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recherche);
 
@@ -119,7 +119,7 @@ public class Recherche extends Activity {
             SimpleCursorAdapterWithClick.CallBack callBack = new SimpleCursorAdapterWithClick.CallBack() {
                 @Override
                 public void callback(CharSequence vendeur) {
-                    System.out.println("button pressed");
+                    //System.out.println("button pressed");
                     /*ImageView apercu = (ImageView) popUpArticle.getContentView().findViewById(R.id.apercu);
                     apercu.setImageResource(cursor.getString(cursor.getColumnIndex(cursor.getColumnName(1))));*/
                     TextView vendeur2 = (TextView) popUpArticle.getContentView().findViewById(R.id.vendeur);
@@ -152,7 +152,7 @@ public class Recherche extends Activity {
             }
         }*/
         /* end of exceptions treatement */
-        System.out.println("end of launching");
+        //System.out.println("end of launching");
     }
 
 
@@ -215,7 +215,7 @@ public class Recherche extends Activity {
         ((Button) popUpConnection.getContentView().findViewById(R.id.connect)).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("connection en cours");
+                //System.out.println("connection en cours");
                 handleConnection();
             }
         });
@@ -257,7 +257,8 @@ public class Recherche extends Activity {
                 }
             }
         });
-        Cursor cursor = sqliteDB.rawQuery("SELECT id as _id, bookTitle FROM " + tableName, null);
+        Cursor cursor = sqliteDB.rawQuery("SELECT id as _id, bookTitle FROM " + tableName+" LIMIT 1, 5", null);
+        //System.out.println(cursor.getCount());
         SimpleCursorAdapter panierAdapter = new SimpleCursorAdapter(this, R.layout.article_panier, cursor, new String[]{"bookTitle",},
                 new int[]{R.id.vendeur_panier});
         ListView panier = (ListView) popUpAccount.getContentView().findViewById(R.id.panier);
@@ -288,12 +289,12 @@ public class Recherche extends Activity {
 
     private void handleSlideMenu() {
         prepareListData();
-        System.out.println("menu de navigation en cours de création");
+        //System.out.println("menu de navigation en cours de création");
         menuElementsList = (ExpandableListView) findViewById(R.id.menu_elements);
         menuElementsList.setGroupIndicator(getResources().getDrawable(R.drawable.group_indicator));
         menuElementsList.setMinimumWidth(metrics.widthPixels / 2);
         ExpandableListAdapter myAdapter = new ExpandableListAdapter(this, groupTitle, listDataChild,
-                R.layout.menu, R.layout.menu_item, R.id.intitule, R.id.menu_element_title);
+                R.layout.menu, R.layout.prix, R.layout.note, R.layout.menu_item, R.id.intitule, R.id.intitule_prix, R.id.intitule_note, R.id.menu_element_title);
         menuLayout = (DrawerLayout) findViewById(R.id.menu_layout);
         // set a custom shadow that overlays the main content when the drawer opens
         //menuLayout.setDrawerShadow(R.drawable.airfree, GravityCompat.START);
@@ -322,7 +323,7 @@ public class Recherche extends Activity {
                 findViewById(R.id.title_text).setVisibility(View.GONE);
             }
         };
-        System.out.println("menuToogle créé");
+        //System.out.println("menuToogle créé");
         menuLayout.setDrawerListener(menuToggle);
         ImageButton imageButton = (ImageButton) findViewById(R.id.imageButton);
         imageButton.setVisibility(View.VISIBLE);
@@ -339,6 +340,14 @@ public class Recherche extends Activity {
                 }
             }
         });
+        /*
+    seekBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
+        @Override
+        public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
+            // handle changed range values
+            Log.i(TAG, "User selected new range values: MIN=" + minValue + ", MAX=" + maxValue);
+        }
+    }); */
     }
 
     /*
@@ -352,11 +361,21 @@ public class Recherche extends Activity {
         for(int k=0; k<bookTitle.length;k++) {
             vendors.add(bookTitle[k]);
         };
- 
         listDataChild.put(groupTitle[0], vendors); // Header, Child data
-        for(int k=1; k<groupTitle.length;k++) {
+
+        List<String> prices = new ArrayList<String>();
+        prices.add("Prix");
+        listDataChild.put(groupTitle[1], prices);
+
+        List<String> notes = new ArrayList<String>();
+        notes.add("Note");
+        listDataChild.put(groupTitle[2], notes);
+
+        //others
+        for(int k=3; k<groupTitle.length;k++) {
             listDataChild.put(groupTitle[k], new ArrayList<String>());
         };
+
         
     }
 
@@ -379,7 +398,7 @@ public class Recherche extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // The action bar home/up action should open or close the drawer.
         // ActionBarDrawerToggle will take care of this.
-        System.out.println("bouton appuyé");
+        //System.out.println("bouton appuyé");
         if (menuToggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -397,8 +416,8 @@ public class Recherche extends Activity {
         public void onItemClick(AdapterView parent, View view, int position,
                                 long id) {
             /* action you want to do when an item is selected */
-            System.out.println("ok");
-            System.out.println(id);
+            //System.out.println("ok");
+            //System.out.println(id);
         }
     }
 
@@ -443,9 +462,4 @@ public class Recherche extends Activity {
         return drawableFromUrl(url);
     }
 
-    private void pop(View Article){
-        String t = Article.findViewById(R.id.intitule).toString();
-        System.out.println(t);
-
-    }
 }
