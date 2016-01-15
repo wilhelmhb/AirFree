@@ -38,7 +38,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/connect"
-            android:textSize="10dp"
             android:text="Se connecter"
             android:background="@drawable/bouton"
             style="@style/button_text"/>

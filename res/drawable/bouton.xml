@@ -9,6 +9,11 @@
                 android:color="#992f2f" />
             <corners
                 android:radius="6dp" />
+            <padding
+                android:top="@dimen/button_paddding"
+                android:bottom="@dimen/button_paddding"
+                android:left="@dimen/button_paddding"
+                android:right="@dimen/button_paddding"/>
         </shape>
     </item>
     <item>
@@ -22,6 +27,11 @@
                 android:color="#992f2f" />
             <corners
                 android:radius="6dp" />
+            <padding
+                android:top="@dimen/button_paddding"
+                android:bottom="@dimen/button_paddding"
+                android:left="@dimen/button_paddding"
+                android:right="@dimen/button_paddding"/>
         </shape>
     </item>
 </selector>
