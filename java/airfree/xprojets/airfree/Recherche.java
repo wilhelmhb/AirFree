@@ -262,6 +262,7 @@ public class Recherche extends Activity {
         findViewById(R.id.loginButton).setVisibility(View.GONE);
         findViewById(R.id.myAccountButton).setVisibility(View.VISIBLE);
         handlePopUpMyAccount();
+        popUpArticle.getContentView().findViewById(R.id.noter).setVisibility(View.VISIBLE);
     }
 
     private void handleConnection() {
