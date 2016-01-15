@@ -19,7 +19,8 @@
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="2dp"
+        android:paddingRight="10dp"
+        android:scrollbarStyle="outsideOverlay"
         android:layout_weight="0.5">
         <LinearLayout
             android:orientation="vertical"
@@ -118,3 +119,4 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed facilisis leo congu
     </ScrollView>
     <!--</GridView>-->
 </LinearLayout>
+
