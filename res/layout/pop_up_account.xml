@@ -1,36 +1,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="horizontal"
     android:padding="1sp"
     android:layout_gravity="center"
     style="@style/AppTheme"
-    android:id="@+id/popUpLogin"
+    android:id="@+id/popUpAccount"
     tools:context="XProjets.airfree.Recherche"
     android:weightSum="1">
     <!--panier-->
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:layout_weight="0.3">
-        <LinearLayout
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <Button
+            android:text="Valider ma commande"
+            android:id="@+id/validation"
+            android:background="@drawable/bouton"
+            style="@style/button_text"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingRight="10dp"
+            android:scrollbarStyle="outsideOverlay">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Valider ma commande"
-                android:background="@drawable/bouton"
-                style="@style/button_text"/>
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <!--insert to-buy items here-->
-            </ListView>
-        </LinearLayout>
-    </ScrollView>
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <airfree.xprojets.airfree.NestedListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/panier"
+                    android:numColumns="1"
+                    android:dividerHeight="0sp"
+                    android:background="#801051">
+                    <!--insert to-buy items here-->
+                </airfree.xprojets.airfree.NestedListView>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -51,6 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textSize="16dp"
+                android:id="@+id/mail_account"
                 android:text="Email"/>
             <EditText
                 android:layout_width="match_parent"
