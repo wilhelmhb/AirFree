@@ -20,12 +20,6 @@
         android:scaleType="fitCenter"
         android:id="@+id/apercu"
         android:src="@drawable/bloc_luxe"/>
-    <!--<GridView
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:numColumns="2"
-        android:gravity="center">-->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -74,5 +68,4 @@
             android:singleLine="false"
             android:textColor="#888888"/>
     </LinearLayout>
-    <!--</GridView>-->
 </GridLayout>

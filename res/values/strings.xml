@@ -10,4 +10,6 @@
     <string name="drawer_open">Open menu</string>
     <string name="drawer_close">Close menu</string>
     <string name="search">Search</string>
+    <string name="connect">Se connecter</string>
+    <string name="myAccount">Mon compte</string>
 </resources>

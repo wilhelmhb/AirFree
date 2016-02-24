@@ -1,0 +1,13 @@
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="XProjets.airfree.Recherche">
+    <!--<item android:id="@+id/action_search"
+          android:icon="@android:drawable/ic_menu_search"
+          android:showAsAction="ifRoom|withText"
+          android:title="Recherche"
+        tools:ignore="AppCompatResource" />-->
+    <item android:id="@+id/boutiques" android:title="Tri par vendeur"/>
+    <item android:id="@+id/prix" android:title="Trix par prix"/>
+</menu>

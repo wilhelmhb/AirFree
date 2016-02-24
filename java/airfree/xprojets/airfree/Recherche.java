@@ -25,8 +25,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Main activity :
+ *      Displays the list of items
+ *      Allows the user to choose filters, and to search for a special article
+ */
 public class Recherche extends Activity {
-    // part db (test for the adapter)
+    /*db part (test for the adapter)*/
     private List bookTitles;
     private final String dbName = "Android";
     private static SQLiteDatabase sqliteDB = null;
@@ -94,12 +99,14 @@ public class Recherche extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
-        //System.out.println("activity launched");
         super.onCreate(savedInstanceState);
+        /* load the search.xml layout */
         setContentView(R.layout.recherche);
 
+        /* get the size of the screen in order to place the elements of the ActionBar */
         metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        /* hide the ActionBar */
         getActionBar().hide();
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -115,28 +122,34 @@ public class Recherche extends Activity {
                 sqliteDB.execSQL("INSERT INTO " + tableName + " Values ("+i+",'" + ver + "');");
                 i++;
             }
+            /* get the elements from the db */
             final Cursor cursor = sqliteDB.rawQuery("SELECT id as _id, bookTitle FROM " + tableName, null);
+            /* every article will on click display a popup with its value (here is only the vendor handled */
             SimpleCursorAdapterWithClick.CallBack callBack = new SimpleCursorAdapterWithClick.CallBack() {
                 @Override
                 public void callback(CharSequence vendeur) {
-                    //System.out.println("button pressed");
-                    /*ImageView apercu = (ImageView) popUpArticle.getContentView().findViewById(R.id.apercu);
-                    apercu.setImageResource(cursor.getString(cursor.getColumnIndex(cursor.getColumnName(1))));*/
+                    /* set the name of the vendor */
                     TextView vendeur2 = (TextView) popUpArticle.getContentView().findViewById(R.id.vendeur);
                     vendeur2.setText(vendeur);
+                    /* display the popup */
                     layout_MainMenu.getForeground().setAlpha(220);
                     popUpArticle.showAtLocation(findViewById(R.id.mainmenu), Gravity.CENTER, 0, 0);
                     popUpArticle.update(metrics.widthPixels - 100, metrics.heightPixels - 100);
                 }
             };
+            /* create the popup for the articles */
             handlePopUpArticle();
+            /* create the slide menu */
             handleSlideMenu();
             if(connected){
+                /* if the user is connected, we display the button for accessing to his account in the ActionBar */
                 ifIsConnected();
             }
             else {
+                /* if not, we display in the ActionBar the button for the login popup */
                 handlePopUpConnection();
             }
+            /* displays the list of items, with the behavior on Click */
             myAdapter = new SimpleCursorAdapterWithClick(this, R.layout.article, cursor, new String[]{"bookTitle",},
                     new int[]{R.id.vendeur}, R.id.apercu, callBack);
             /* end of the db creation and treatment */
@@ -145,22 +158,19 @@ public class Recherche extends Activity {
         }
         /* exceptions treatement (db) */
         catch(SQLiteException e) {System.out.println(e.getMessage());}
-        /*finally {
-            if (sqliteDB != null) {
-                sqliteDB.execSQL("DELETE FROM " + tableName);
-                sqliteDB.close();
-            }
-        }*/
-        /* end of exceptions treatement */
-        //System.out.println("end of launching");
+
     }
 
-
+    /**
+     * create and the popup for a random article
+     */
     private void handlePopUpArticle() {
         popUpArticle = new PopupWindow();
+        /* set the graphical aspect of the popup */
         LayoutInflater inflaterArticle = LayoutInflater.from(this);
         View popUpViewArticle = inflaterArticle.inflate(R.layout.pop_up_article, null);
         popUpArticle.setContentView(popUpViewArticle);
+        /* set the behaviour of the popup */
         popUpArticle.setOutsideTouchable(true);
         popUpArticle.setTouchable(true);
         popUpArticle.setFocusable(true);
@@ -169,6 +179,7 @@ public class Recherche extends Activity {
             @Override
             public void onDismiss() {
                 popUpArticle.dismiss();
+                /* delete the shadow shape when the popup is dismissed */
                 layout_MainMenu.getForeground().setAlpha(0);
                 click = true;
             }
@@ -192,36 +203,35 @@ public class Recherche extends Activity {
                 click = true;
             }
         });
-        layout_MainMenu = (FrameLayout) findViewById( R.id.mainmenu);
+        /* set a transparent foreground */
+        layout_MainMenu = (FrameLayout) findViewById(R.id.mainmenu);
         layout_MainMenu.getForeground().setAlpha(0);
-        //((FrameLayout) findViewById(R.id.action_bar)).getForeground().setAlpha(0);
-        Button but = (Button) findViewById(R.id.loginButton);
+        /* the behaviour of the login button */Button but = (Button) findViewById(R.id.loginButton);
         but.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 if (click) {
+                    /* draw a dark shdow on the background */
                     layout_MainMenu.getForeground().setAlpha(220);
-                    //((FrameLayout) findViewById(R.id.action_bar)).getForeground().setAlpha(220);
                     popUpConnection.showAtLocation(findViewById(R.id.mainmenu), Gravity.CENTER, 0, 0);
                     popUpConnection.update(metrics.widthPixels - 100, metrics.heightPixels - 100);
                     click = false;
                 } else {
-                    //((FrameLayout) findViewById(R.id.action_bar)).getForeground().setAlpha(0);
-                    //layout_MainMenu.getForeground().setAlpha(0);
                     popUpConnection.dismiss();
-                    //click = true;
                 }
             }
         });
+        /* allows to get the connection identifiers for handling the connection */
         ((Button) popUpConnection.getContentView().findViewById(R.id.connect)).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                //System.out.println("connection en cours");
                 handleConnection();
             }
         });
     }
 
+    /* create the popup for the personal account of the customer */
     private void handlePopUpMyAccount() {
+        /* same as previously : create the popup */
         popUpAccount = new PopupWindow();
         LayoutInflater inflater = LayoutInflater.from(this);
         View popUpView = inflater.inflate(R.layout.pop_up_account, null);
@@ -238,6 +248,7 @@ public class Recherche extends Activity {
                 click = true;
             }
         });
+        /* behaviour on click and dark shape on the background */
         layout_MainMenu = (FrameLayout) findViewById(R.id.mainmenu);
         layout_MainMenu.getForeground().setAlpha(0);
         Button but = (Button) findViewById(R.id.myAccountButton);
@@ -257,10 +268,12 @@ public class Recherche extends Activity {
                 }
             }
         });
+        /* create the link with the database */
         Cursor cursor = sqliteDB.rawQuery("SELECT id as _id, bookTitle FROM " + tableName+" LIMIT 1, 5", null);
-        //System.out.println(cursor.getCount());
+        /* populate the list of vendors */
         SimpleCursorAdapter panierAdapter = new SimpleCursorAdapter(this, R.layout.article_panier, cursor, new String[]{"bookTitle",},
                 new int[]{R.id.vendeur_panier});
+        /* display the list of items in the customer's basket and allow him to proceed to payment */
         ListView panier = (ListView) popUpAccount.getContentView().findViewById(R.id.panier);
         Button validation = (Button) popUpAccount.getContentView().findViewById(R.id.validation);
         System.out.println(validation.getText());
@@ -269,40 +282,41 @@ public class Recherche extends Activity {
         panier.setAdapter(panierAdapter);
     }
 
+    /* handle the graphic behaviour if the user is connected */
     private void ifIsConnected() {
         findViewById(R.id.loginButton).setVisibility(View.GONE);
         findViewById(R.id.myAccountButton).setVisibility(View.VISIBLE);
         handlePopUpMyAccount();
+        /* allow the user to vote for an article */
         popUpArticle.getContentView().findViewById(R.id.noter).setVisibility(View.VISIBLE);
     }
 
+    /* handle the connection of a customer */
     private void handleConnection() {
+        /* get his references */
         CharSequence email = ((TextView) popUpConnection.getContentView().findViewById(R.id.mail_connect)).getText();
         CharSequence mdp = ((TextView) popUpConnection.getContentView().findViewById(R.id.mdp_connect)).getText();
         System.out.println(email);
         //TODO : test if really connected
+        /* adapt appearence */
         connected = true;
         ifIsConnected();
         System.out.println("connexion réussie");
         popUpConnection.dismiss();
     }
 
+    /* handle the appearance of the slide menu */
     private void handleSlideMenu() {
+        /* populate the elements of the menu */
         prepareListData();
-        //System.out.println("menu de navigation en cours de création");
         menuElementsList = (ExpandableListView) findViewById(R.id.menu_elements);
         menuElementsList.setGroupIndicator(getResources().getDrawable(R.drawable.group_indicator));
         menuElementsList.setMinimumWidth(metrics.widthPixels / 2);
         ExpandableListAdapter myAdapter = new ExpandableListAdapter(this, groupTitle, listDataChild,
                 R.layout.menu, R.layout.prix, R.layout.note, R.layout.menu_item, R.id.intitule, R.id.intitule_prix, R.id.intitule_note, R.id.menu_element_title);
         menuLayout = (DrawerLayout) findViewById(R.id.menu_layout);
-        // set a custom shadow that overlays the main content when the drawer opens
-        //menuLayout.setDrawerShadow(R.drawable.airfree, GravityCompat.START);
         menuElementsList.setAdapter(myAdapter);
         menuElementsList.setOnItemClickListener(new DrawerItemClickListener());
-        // enable ActionBar app icon to behave as action to toggle menu
-        //mActionBar.setDisplayHomeAsUpEnabled(true);
-        //mActionBar.setHomeButtonEnabled(true);
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding drawer and the action bar app icon
@@ -323,8 +337,9 @@ public class Recherche extends Activity {
                 findViewById(R.id.title_text).setVisibility(View.GONE);
             }
         };
-        //System.out.println("menuToogle créé");
+        /* handle the actions on the sliding menu */
         menuLayout.setDrawerListener(menuToggle);
+        /* display the menu on click on the search icon */
         ImageButton imageButton = (ImageButton) findViewById(R.id.imageButton);
         imageButton.setVisibility(View.VISIBLE);
         imageButton.setOnClickListener(new OnClickListener() {
@@ -340,14 +355,6 @@ public class Recherche extends Activity {
                 }
             }
         });
-        /*
-    seekBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
-        @Override
-        public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
-            // handle changed range values
-            Log.i(TAG, "User selected new range values: MIN=" + minValue + ", MAX=" + maxValue);
-        }
-    }); */
     }
 
     /*
