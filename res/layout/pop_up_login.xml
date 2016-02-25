@@ -41,6 +41,13 @@
             android:text="Se connecter"
             android:background="@drawable/bouton"
             style="@style/button_text"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mot de passe ou adresse e-mail erroné"
+            android:textColor="@color/red_logo"
+            android:layout_weight="1"
+            android:id="@+id/wrong_passwd"/>
     </LinearLayout>
     <LinearLayout
         android:orientation="vertical"
@@ -74,5 +81,12 @@
             android:text="S'inscrire"
             android:background="@drawable/bouton"
             style="@style/button_text"/>
+        <TextView
+            android:id="@+id/registered"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vous avez bien été enregistré. Veuillez vous connecter pour continuer"
+            android:textColor="@color/red_logo"
+            android:layout_weight="1"/>
     </LinearLayout>
 </LinearLayout>

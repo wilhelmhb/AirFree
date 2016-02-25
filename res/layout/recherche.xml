@@ -4,6 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     tools:context="XProjets.airfree.Recherche"
+    android:background="#801051"
     android:foreground="@drawable/shape_window_dim">
     <LinearLayout
         android:layout_width="match_parent"

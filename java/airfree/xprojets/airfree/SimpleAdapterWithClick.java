@@ -10,6 +10,7 @@ import android.widget.CursorAdapter;
 import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
@@ -19,7 +20,7 @@ import android.widget.TextView;
 
 class SimpleCursorAdapterWithClick extends SimpleCursorAdapter {
     public interface CallBack {
-        void callback(CharSequence vendeur);
+        void callback(CharSequence vendeur, CharSequence produit, CharSequence prix, float note, CharSequence description);
     }
     private CallBack callBack;
     private Context mContext;
@@ -28,6 +29,7 @@ class SimpleCursorAdapterWithClick extends SimpleCursorAdapter {
     private Cursor cr;
     private final LayoutInflater inflater;
     private final int button_layout;
+    private final String[] fields_names;
 
 
     public SimpleCursorAdapterWithClick(Context context,int layout_id, Cursor c,
@@ -39,6 +41,7 @@ class SimpleCursorAdapterWithClick extends SimpleCursorAdapter {
         this.inflater = LayoutInflater.from(context);
         this.cr = c;
         this.callBack = callBack;
+        this.fields_names = fields_names;
     }
 
     @Override
@@ -52,18 +55,31 @@ class SimpleCursorAdapterWithClick extends SimpleCursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        final int row_id = cursor.getColumnIndex("_id");  //Your row id (might need to replace)
+        //final int row_id = cursor.getColumnIndex("_id");  //Your row id (might need to replace)
         final TextView vendeur = (TextView) view.findViewById(R.id.vendeur);
-        vendeur.setText(cursor.getString(cursor.getColumnIndex("bookTitle")));
+        vendeur.setText(cursor.getString(cursor.getColumnIndex("boutique")));
         System.out.println(vendeur.getText());
+        final TextView produit = (TextView) view.findViewById(R.id.intitule);
+        produit.setText(cursor.getString(cursor.getColumnIndex("produit")));
+        System.out.println(produit.getText());
+        final TextView prix = (TextView) view.findViewById(R.id.prix);
+        prix.setText(cursor.getString(cursor.getColumnIndex("prix")));
+        System.out.println(prix.getText());
+        final RatingBar note = (RatingBar) view.findViewById(R.id.notation);
+        System.out.println(note);
+        note.setRating(cursor.getFloat(cursor.getColumnIndex("note")));
+        System.out.println(note.getRating());
+        final TextView description = (TextView) view.findViewById(R.id.details);
+        description.setText(cursor.getString(cursor.getColumnIndex("description")));
+        System.out.println(description.getText());
         final Cursor c = cursor;
         ImageButton button = (ImageButton) view.findViewById(button_layout);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //ADD STUFF HERE you know which row is clicked. and which button
-                System.out.println("button clicked : "+vendeur.getText());
-                callBack.callback(vendeur.getText());
+                System.out.println("button clicked : " + vendeur.getText());
+                callBack.callback(vendeur.getText(), produit.getText(), prix.getText(),note.getRating(), description.getText());
 
             }
         });

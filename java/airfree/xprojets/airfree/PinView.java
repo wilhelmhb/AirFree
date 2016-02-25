@@ -204,6 +204,7 @@ class PinView extends View {
      */
     public void setXValue(String x) {
         mValue = x;
+        System.out.println(mValue);
     }
 
     /**

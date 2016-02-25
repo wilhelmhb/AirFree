@@ -59,6 +59,16 @@
                 android:textColor="#777777"
                 android:layout_weight="1"/>
         </LinearLayout>
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:isIndicator="true"
+            android:layout_gravity="left|center_vertical"
+            android:numStars="5"
+            android:stepSize="0.5"
+            android:rating="2.5"
+            android:id="@+id/notation"
+            style="@style/RatingBar"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

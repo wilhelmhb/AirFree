@@ -4,6 +4,7 @@ package airfree.xprojets.airfree;
  * Created by guillaume on 12/12/15.
  */
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import android.content.Context;
@@ -12,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
@@ -26,14 +29,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private int _item_title_id2;
     private int _list_item_id3;
     private int _item_title_id3;
+    private int _list_item_id4;
+    private int _item_title_id4;
     private int _list_group_id;
     private int _group_title_id;
 
 
     public ExpandableListAdapter(Context context, String listDataHeader[],
                                  HashMap<String, List<String>> listChildData,
-                                 int list_item_id, int list_item_id2, int list_item_id3, int list_group_id,
-                                 int item_title_id, int item_title_id2, int item_title_id3, int group_title_id) {
+                                 int list_item_id, int list_item_id2, int list_item_id3, int list_item_id4, int list_group_id,
+                                 int item_title_id, int item_title_id2, int item_title_id3, int item_title_id4, int group_title_id) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
@@ -43,6 +48,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         this._item_title_id2 = item_title_id2;
         this._list_item_id3 = list_item_id3;
         this._item_title_id3 = item_title_id3;
+        this._list_item_id4 = list_item_id4;
+        this._item_title_id4 = item_title_id4;
         this._list_group_id = list_group_id;
         this._group_title_id = group_title_id;
     }
@@ -70,14 +77,68 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             switch (childType) {
                 case 0:
                     convertView = inflater.inflate(this._list_item_id, null);
+                    convertView.findViewById(R.id.clic).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Recherche c = (Recherche) _context;
+                            System.out.println("case appuyée");
+                            if (((CheckBox) v).isChecked()) {
+                                System.out.println("checked");
+                                if (c.checked_vendors.size() == c.boutique.length) {
+                                    c.checked_vendors = new LinkedList<String>();
+                                    c.checked_vendors.add(((TextView) ((View) v.getParent()).findViewById(R.id.intitule)).getText().toString());
+                                } else {
+                                    c.checked_vendors.add(((TextView) ((View)v.getParent()).findViewById(R.id.intitule)).getText().toString());
+                                }
+                            } else {
+                                System.out.println("unchecked");
+                                c.checked_vendors.remove(((TextView) ((View)v.getParent()).findViewById(R.id.intitule)).getText().toString());
+                            }
+                        }
+                    });
                     convertView.setTag(childType);
                     break;
                 case 1:
                     convertView = inflater.inflate(this._list_item_id2, null);
+                    convertView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Recherche c = (Recherche) _context;
+                            c.prices[0] = Double.parseDouble(((RangeBar) ((View)v.getParent()).findViewById(R.id.rangebar_price)).getLeftPinValue());
+                            c.prices[1] = Double.parseDouble(((RangeBar) ((View)v.getParent()).findViewById(R.id.rangebar_price)).getRightPinValue());
+                            System.out.println("moved");
+                        }
+                    });
                     convertView.setTag(childType);
                     break;
                 case 2:
                     convertView = inflater.inflate(this._list_item_id3, null);
+                    convertView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Recherche c = (Recherche) _context;
+                            c.notes[0] = Double.parseDouble(((RangeBar) ((View)v.getParent()).findViewById(R.id.rangebar_note)).getLeftPinValue());
+                            c.notes[1] = Double.parseDouble(((RangeBar) ((View)v.getParent()).findViewById(R.id.rangebar_note)).getRightPinValue());
+                            System.out.println("moved");
+                        }
+                    });
+                    convertView.setTag(childType);
+                    break;
+                case 3:
+                    convertView = inflater.inflate(this._list_item_id4, null);
+                    convertView.findViewById(R.id.clic).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Recherche c = (Recherche) _context;
+                            if (((CheckBox) v).isChecked()) {
+                                System.out.println("checked");
+                                c.available = 1;
+                            } else {
+                                System.out.println("unchecked");
+                                c.available = 0;
+                            }
+                        }
+                    });
                     convertView.setTag(childType);
                     break;
                 default:
@@ -101,9 +162,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 description_child2.setText(incoming_text);
                 break;
             case 2:
-                //Define how to render the data on the CHILD_TYPE_2 layout
+                //Define how to render the data on the CHILD_TYPE_3 layout
                 TextView description_child3 = (TextView) convertView.findViewById(this._item_title_id3);
                 description_child3.setText(incoming_text);
+                break;
+            case 3:
+            //Define how to render the data on the CHILD_TYPE_4 layout
+                TextView description_child4 = (TextView) convertView.findViewById(this._item_title_id4);
+                description_child4.setText(incoming_text);
                 break;
         }
 
@@ -163,7 +229,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildTypeCount() {
-        return 3; // I defined 4 child types (CHILD_TYPE_1, CHILD_TYPE_2, CHILD_TYPE_3, CHILD_TYPE_UNDEFINED)
+        return 4; // I defined 5 child types (CHILD_TYPE_1, CHILD_TYPE_2, CHILD_TYPE_3, CHILD_TYPE_4, CHILD_TYPE_UNDEFINED)
     }
 
     @Override
@@ -175,6 +241,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 return 1;
             case 2:
                 return 2;
+            case 3:
+                return 3;
             default:
                 return -1;
         }

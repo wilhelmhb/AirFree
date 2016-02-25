@@ -5,5 +5,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="button_paddding">5dp</dimen>
     <color name="bleu_logo">#ff050069</color>
+    <color name="red_logo">#FF0000</color>
 
 </resources>
